@@ -1,0 +1,128 @@
+openapi: 3.0.1
+info:
+  title: Car mircro service
+  description: Micro service to book a car
+  contact:
+    email: supportm@bp.org
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+- url: http://localhost:8090
+tags:
+- name: car-rental
+  description: car which you can book
+paths:
+  /car:
+    post:
+      tags:
+      - car
+      summary: Booking of a car
+      operationId: bookCar
+      requestBody:
+        description: Details of car which you are booking
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookCarRequest'
+        required: true
+      responses:
+        400:
+          description: Problem during processing of the booking
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+
+components:
+  schemas:
+    Person:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+    Car:
+      type: object
+      properties:
+        brand:
+          type: string
+        model:
+          type: string
+        country:
+          type: string
+        city:
+          type: string
+        checkIn:
+          type: string
+          format: date-time
+        checkOut:
+          type: string
+          format: date-time
+    BookingInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        cost:
+          type: number
+    Point:
+      type: object
+      properties:
+        airport:
+          type: string
+        date:
+          type: string
+          format: date-time
+    Parking:
+      type: object
+      properties:
+        from:
+          $ref: '#/components/schemas/Point' 
+        to:
+          $ref: '#/components/schemas/Point' 
+    PaymentCard:
+      type: object
+      properties:
+        name:
+          type: string
+        validTo:
+          type: string
+        number:
+          type: string
+    BookCarRequest:
+      type: object
+      properties:
+        person:
+          $ref: '#/components/schemas/Person'
+        car:
+          $ref: '#/components/schemas/Car'
+    BookParkingRequest:
+      type: object
+      properties:
+        person:
+          $ref: '#/components/schemas/Person'
+        parking:
+          $ref: '#/components/schemas/Parking'
+    BookCarRentalRequest:
+      type: object
+      properties:
+        person:
+          $ref: '#/components/schemas/Person'
+        car:
+          $ref: '#/components/schemas/Car'
+        parking:
+          $ref: '#/components/schemas/Parking'
+        paymentCard:
+          $ref: '#/components/schemas/PaymentCard'
+    ExceptionResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        message:
+          type: string
+

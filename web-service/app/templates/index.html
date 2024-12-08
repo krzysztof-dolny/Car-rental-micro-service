@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Booking</title>
+    <script>
+        function showForm() {
+            document.getElementById('result-section').style.display = 'none';
+            document.getElementById('form-section').style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <h1>Car Booking</h1>
+
+    <!-- Sekcja Wyniku -->
+    {% if success %}
+        <div id="result-section">
+            {% if dane is not none %}
+                {% if dane.cost == "w tym kraju" %}
+                    <p>Not served country</p>
+                {% elif dane.cost == "w tym miescie" %}
+                    <p>Not served City</p>
+                {% else %}
+                    <p>
+                        ID: {{ dane.id }}<br>
+                        COST: {{ dane.cost }}<br>
+                    </p>
+                {% endif %}
+            {% endif %}
+            <button onclick="showForm()">Place Another Order</button>
+        </div>
+    {% endif %}
+
+    <!-- Sekcja Formularza -->
+    <div id="form-section" style="{% if success %}display: none;{% endif %}">
+        <form method="POST">
+            <h2>Person</h2>
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="email" name="email" placeholder="Email" required>
+
+            <h2>Car</h2>
+            <input type="text" name="car_brand" placeholder="Marka" required>
+            <input type="text" name="car_model" placeholder="Model" required>
+            <input type="text" name="car_country" placeholder="Kraj" required>
+
+            <h2>Parking</h2>
+            <input type="text" name="parking1_name" placeholder="Parking startowy" required>
+            <input type="datetime-local" name="parking_start" required>
+            <input type="text" name="parking2_name" placeholder="Parking końcowy" required>
+            <input type="datetime-local" name="parking_end" required>
+
+            <h2>Payment Card</h2>
+            <input type="text" name="payment_card_name" placeholder="Card Name" required>
+            <input type="text" name="payment_card_valid_to" placeholder="Valid To" required>
+            <input type="text" name="payment_card_number" placeholder="Card Number" required>
+
+            <button type="submit">Book Car</button>
+        </form>
+    </div>
+</body>
+</html>
